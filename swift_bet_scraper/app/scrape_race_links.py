@@ -37,14 +37,13 @@ class LinkInfo(BaseModel):
     finished: bool = False
 
 
-class SwiftBetScraper:
+class SwiftBetRaceLinkScraper:
     def __init__(self) -> None:
         # setup selenium web driver
         options = webdriver.ChromeOptions()
         self.driver = webdriver.Chrome(options=options)
 
     def get_race_list_containers(self, url: str = MAIN_URL) -> list[BeautifulSoup]:
-        # try:
         self.driver.get(url)
 
         WebDriverWait(self.driver, 20).until(
@@ -176,5 +175,5 @@ class SwiftBetScraper:
 
 
 if __name__ == "__main__":
-    scraper = SwiftBetScraper()
+    scraper = SwiftBetRaceLinkScraper()
     scraper.generate_all_csvs()
