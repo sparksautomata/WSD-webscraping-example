@@ -1,0 +1,30 @@
+{
+	"settings": {
+		"editor.trimAutoWhitespace": true,
+		"files.trimTrailingWhitespace": true,
+		"files.insertFinalNewline": true,
+		"python.analysis.typeCheckingMode": "basic",
+		"[python]": {
+			"editor.defaultFormatter": "charliermarsh.ruff",
+			"editor.codeActionsOnSave": {
+				"source.fixAll": "explicit"
+			},
+			"editor.formatOnSave": true,
+		},
+		"editor.rulers": [
+			120
+		],
+	},
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"extensions": {
+		"recommendations": [
+			"ms-azuretools.vscode-docker",
+			"charliermarsh.ruff",
+			"jebbs.plantuml"
+		]
+	}
+}

@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "wsd-webscrape-example"
+version = "0.1.0"
+description = ""
+authors = ["sparksautomata <matthew.s@automata.tech>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+beautifulsoup4 = "^4.12.3"
+pandas = "^2.2.3"
+numpy = "^2.2.1"
+pytest = "^8.3.4"
+requests = "^2.32.3"
+selenium = "^4.27.1"
+pydantic = "^2.10.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
