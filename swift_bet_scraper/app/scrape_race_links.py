@@ -139,18 +139,18 @@ class SwiftBetRaceLinkScraper:
             "div",
             class_=RACE_PANEL,
         )
+
+        # use pydantic to easily convert the data to a dict and then to dataframe
         race_info_list = [self.__format_race_info(rp) for rp in all_race_panels]
         df_races_data = pd.DataFrame(
             [race.model_dump() for race in race_info_list if race is not None]
         )
 
-        # Define the base directory relative to the current file
+        # save out the data to csv
         base_dir = os.path.dirname(os.path.abspath(__file__))
-
-        # Define the file path relative to the base directory
         file_path = os.path.join(
             base_dir,
-            f"../data_output/{race_type}_{day_of_data}_race_data_collected_{day_of_pull}.csv",
+            f"../races_data/{race_type}_{day_of_data}_race_data_collected_{day_of_pull}.csv",
         )
 
         df_races_data.to_csv(file_path, index=False)

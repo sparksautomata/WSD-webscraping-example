@@ -1,6 +1,8 @@
+import os
 import re
 import time
 from bs4 import BeautifulSoup
+import pandas as pd
 from pydantic import BaseModel
 from selenium import webdriver
 
@@ -11,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from swift_bet_scraper.app.constants import MAIN_URL, RACE_CONTAINER
 
 
+# TODO: move any of these that are needed to constants.py
 TARGET_URL = (
     "https://swiftbet.com.au//racing/gallops/moonee-valley/race-3-1963220-1088174"
 )
@@ -65,13 +68,10 @@ class SwiftBetRaceLinkScraper:
             # )
             time.sleep(5)  # TODO: fix these rough timings with proper WebDriverWaits
 
-            print("card panel loaded")
-
             # navigate to the race page
             race_panel = self.driver.find_element(
                 By.XPATH, f"//a[@href='{target_url}']"
             )
-            print("race_panel located")
             race_panel.click()
 
             # Wait for the race page to load
@@ -95,7 +95,7 @@ class SwiftBetRaceLinkScraper:
             raise ValueError(f"Invalid horse name format: {full_name}")
         return match.group(1)
 
-    def format_prince_info(
+    def format_price_info(
         self, price_info_panel: BeautifulSoup
     ) -> HorsePriceInfo | None:
         horse_name = price_info_panel.find("div", class_=HORSE_NAME)
@@ -110,11 +110,28 @@ class SwiftBetRaceLinkScraper:
             price=float(horse_price.get_text(strip=True)),
         )
 
+    def save_pricing_info(self):
+        price_panels = self.get_race_price_info()
+        race_info_list = [self.format_price_info(pp) for pp in price_panels]
+        df_performed_bets = pd.DataFrame(
+            [race.model_dump() for race in race_info_list if race is not None]
+        )
+
+        # save out the data to csv
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(
+            base_dir,
+            "../performed_bets/example_csv.csv",
+        )  # TODO, use the target url to name the file_path
+
+        df_performed_bets.to_csv(file_path, index=False)
+
 
 if __name__ == "__main__":
     scraper = SwiftBetRaceLinkScraper()
-    price_panels = scraper.get_race_price_info()
-    for panels in price_panels:
-        price_info = scraper.format_prince_info(panels)
-        if price_info:
-            print(price_info.model_dump())
+    scraper.save_pricing_info()
+    # price_panels = scraper.get_race_price_info()
+    # for panels in price_panels:
+    #     price_info = scraper.format_price_info(panels)
+    #     if price_info:
+    #         print(price_info.model_dump())
