@@ -34,6 +34,9 @@ class SwiftBetRaceLinkScraper:
         self.driver = webdriver.Chrome(options=options)
 
     def get_race_list_containers(self, url: str = MAIN_URL) -> list[BeautifulSoup]:
+        """
+        Get the individual race containers from the main page. These contain the race time and link to race.
+        """
         self.driver.get(url)
 
         WebDriverWait(self.driver, 20).until(
@@ -46,6 +49,10 @@ class SwiftBetRaceLinkScraper:
         return parsed_page.find_all("div", class_=RACE_CONTAINER)
 
     def __get_link_info(self, race_panel: BeautifulSoup) -> LinkInfo | None:
+        """
+        Information like course name and race number are present in the link.
+        Pull the relevant info from the link to cut down on website elements we need to process.
+        """
         for html_class in LINK_CLASSES:
             link_part = race_panel.find("a", class_=html_class)
             if link_part:
@@ -60,7 +67,29 @@ class SwiftBetRaceLinkScraper:
                 )
         return None
 
+    def __add_time_to_race_to_current_time(self, time_str: str) -> datetime:
+        """
+        Extract the time to race in days, hours and minutes and add this to the current time to get the actual
+        """
+        match = re.match(DATE_PATTERN, time_str)
+        if not match:
+            raise ValueError(
+                f"Invalid time format. Expected format 'Xd Yh Zm'. Received: {time_str}"
+            )
+        days, hours, minutes = [int(x) if x is not None else 0 for x in match.groups()]
+        current_time = datetime.now()
+        time_delta = timedelta(days=days, hours=hours, minutes=minutes)
+        new_time = current_time + time_delta
+        new_time = new_time.replace(
+            microsecond=0
+        )  # Clean the data - milliseconds seems to detailed
+
+        return new_time
+
     def __get_race_time(self, race_panel: BeautifulSoup) -> datetime | None:
+        """
+        If a status is present, apply add_time_to_race_to_current_time transformation.
+        """
         for html_class in STATUS_CLASSES:
             status = race_panel.find("div", class_=html_class)
             if status:
@@ -70,6 +99,10 @@ class SwiftBetRaceLinkScraper:
         return None
 
     def __format_race_info(self, race_panel: BeautifulSoup) -> RaceInfo | None:
+        """
+        Format the race information. If a race has already happened it's time is irrelevant.
+        Mark it's time as 'finished'.
+        """
         link_info = self.__get_link_info(race_panel)
         if not link_info:
             # empty panel
@@ -85,7 +118,7 @@ class SwiftBetRaceLinkScraper:
 
         race_time = self.__get_race_time(race_panel)
         if not race_time:
-            # TODO: figure out why this is failing to get some statuses
+            # TODO: fails to capture some statuses that seem to occur when a rase is finishing or being paid out
             logger.info(
                 f"No time found for {link_info.course}: {link_info}. Marking as finished."
             )
@@ -103,29 +136,16 @@ class SwiftBetRaceLinkScraper:
             html_link=link_info.link,
         )
 
-    def __add_time_to_race_to_current_time(self, time_str: str) -> datetime:
-        # Extract hours and minutes from the input string
-        match = re.match(DATE_PATTERN, time_str)
-        if not match:
-            raise ValueError(
-                f"Invalid time format. Expected format 'Xd Yh Zm'. Received: {time_str}"
-            )
-        days, hours, minutes = [int(x) if x is not None else 0 for x in match.groups()]
-        current_time = datetime.now()
-        time_delta = timedelta(days=days, hours=hours, minutes=minutes)
-        new_time = current_time + time_delta
-        new_time = new_time.replace(
-            microsecond=0
-        )  # Clean the data - milliseconds seems to detailed
-
-        return new_time
-
     def parse_race_info(
         self,
         day_of_data: str,
         day_of_pull: str,
         race_list_container: BeautifulSoup,
     ) -> None:
+        """
+        Parse the information of a given race type to a pandas dataframe and save it to a csv.
+        """
+
         race_type = race_list_container.find("span", class_=RACE_CONTAINER_TITLE)
         logger.info(f"Parsing data for '{day_of_data}' of type '{race_type}'.")
         if race_type is None:
@@ -153,6 +173,9 @@ class SwiftBetRaceLinkScraper:
         df_races_data.to_csv(file_path, index=False)
 
     def generate_all_csvs(self) -> None:
+        """
+        Iterate over all race types form today and tomorrow and save out information to labelled csv.
+        """
         # Get the containers
         day_mapping = dict()
         today = datetime.now()

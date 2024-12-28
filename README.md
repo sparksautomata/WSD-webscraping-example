@@ -23,3 +23,13 @@ relevant elements within the page).
 3. Scrape current market prices for horses participating in the selected race.
 4. Save the obtained data into a DataFrame named "df_performed_bets" and export
 it as a CSV file.
+
+# My Approach
+ - I opted to save out the data into separate files, based on day and race-type, as I found this easier to handle and more human-readable.
+ - I quickly discovered most of the elements are dynamically loaded (e.g by Javascript) so needed to empty Selenium over requests to ge the information out.
+ - I presumed that finished races are pretty irrelevant (can't bet on a run race after all) so I overwrote their date as 'Finished' and saved them out the the separate csvs.
+ - There are a number of subtle variation in html object that I have mostly caught, but there seem to be a few that crop up when a race goes through state-changes (e.g when a race starts, finishes and is paid-out). I added logging to capture any future ones.
+ - I assumed when getting prices we only care about the price of a horse to win.
+ - I did not use the race url directly, but the easiest way to tell Selenium what to click on was ot search for the url element. Selenium is still acting like a human navigating the site, just using the url to determine what to look at. Very rarely, this will lead to an error. If you rerun the code it should be fine. I have not been able to identify what makes some clicks not work...
+ - I also couldn't quite get the `WebDriverWait` when navigating to the Tomorrow page. It was convinced `RACE_CONTAINER` was loaded when navigating to the Tomorrow page even when it was no. Part of the dynamic loading maybe?
+

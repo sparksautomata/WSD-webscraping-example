@@ -20,6 +20,10 @@ from swift_bet_scraper.app.constants import (
 from swift_bet_scraper.app.utils import clean_string_for_filepath, random_sleep
 from swift_bet_scraper.app.scraper_types import HorsePriceInfo, RaceInfo
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class SwiftBetRaceLinkScraper:
     def __init__(self) -> None:
@@ -32,6 +36,9 @@ class SwiftBetRaceLinkScraper:
         race_info: RaceInfo,
         starting_url: str = MAIN_URL,
     ) -> list[BeautifulSoup]:
+        """
+        Get the information for a given race. This includes the horse name and price.
+        """
         try:
             self.driver.get(starting_url)
 
@@ -50,7 +57,7 @@ class SwiftBetRaceLinkScraper:
                 tomorrow_button.click()
                 random_sleep(
                     3, 5
-                )  # TODO: for some reason the WebDriverWait will return true, even though the target element has nto been loaded
+                )  # TODO: for some reason the WebDriverWait will return true, when the element hadn't loaded yet
 
             # Wait for race panels to be loaded
             WebDriverWait(self.driver, 20).until(
@@ -84,6 +91,9 @@ class SwiftBetRaceLinkScraper:
             self.driver.quit()
 
     def __extract_horse_name(self, full_name: str) -> str:
+        """
+        Strip out the unnecessary characters in the horse name.
+        """
         # Define the regex pattern to match the horse name
         pattern = r"\d+\.\s*(.*?)\(\d+\)"
         match = re.match(pattern, full_name)
@@ -94,6 +104,9 @@ class SwiftBetRaceLinkScraper:
     def format_price_info(
         self, price_info_panel: BeautifulSoup
     ) -> HorsePriceInfo | None:
+        """
+        Format the extracted price information.
+        """
         horse_name = price_info_panel.find("div", class_=HORSE_NAME)
         if not horse_name:
             # Non-runner: continue
@@ -113,6 +126,9 @@ class SwiftBetRaceLinkScraper:
         )
 
     def get_random_unfinished_race(self) -> RaceInfo:
+        """
+        Get a random race from all races in race_data that are not finished.
+        """
         # read all csvs from races_data directory that have todays data a the end of the file name
         all_files = os.listdir(
             os.path.join(os.path.dirname(os.path.abspath(__file__)), "../races_data")
@@ -144,7 +160,14 @@ class SwiftBetRaceLinkScraper:
         return date.date() == tomorrow.date()
 
     def save_pricing_info(self):
+        """
+        Save out the information to a csv file.
+        """
         random_race_info = self.get_random_unfinished_race()
+        logger.info(
+            f"Getting pricing information for {random_race_info.course}, "
+            f"race {random_race_info.race_number} at {random_race_info.time}"
+        )
         price_panels = self.get_race_price_info(race_info=random_race_info)
         race_info_list = [self.format_price_info(pp) for pp in price_panels]
         df_performed_bets = pd.DataFrame(

@@ -1,4 +1,7 @@
+# Main URL for the swift bet website
 MAIN_URL = "https://www.swiftbet.com.au/racing"
+
+# Key panels on the main racing pages
 RACE_CONTAINER = "css-7bm4ey-RacesListContainer"
 RACE_PANEL = "css-de6u1u-TableData-TableData-RacesRow-RacesField-RacesRow-RacesRow"
 RACE_CONTAINER_TITLE = (
@@ -14,6 +17,7 @@ RACE_LINK_FINISHED_CONTESTED = "css-c9vt4o-RaceItem-RaceItem-RaceItem-RaceItem-R
 RACE_LINK_FIXED = "css-c9vt4o-RaceItem-RaceItem-RaceItem-RaceItem-RaceItem-RacesRow-RacesRow__RaceItem-RacesRow-RacesRow"
 RACE_LINK = "css-17t6czl-RaceItem-RaceItem-RaceItem-RaceItem-RacesRow-RacesRow__RaceItem-RacesRow-RacesRow"
 
+# Grouping for link classes
 FINISHED_LINK_CLASSES = [
     RACE_LINK_FINISHED,
     RACE_LINK_JUST_FINISHED,
@@ -21,7 +25,7 @@ FINISHED_LINK_CLASSES = [
 ]
 LINK_CLASSES = [RACE_LINK_FIXED, RACE_LINK] + FINISHED_LINK_CLASSES
 
-
+# Status classes
 RACE_STATUS_FIXED = "css-1nxhxh1-Text-Text-RaceItem-RaceItem__Status-RaceItem-RaceItem"
 RACE_STATUS_ABOUT_TO_START = (
     "css-oxuhgm-Text-Text-RaceItem-RaceItem__Status-RaceItem-RaceItem"
@@ -30,6 +34,7 @@ RACE_STATUS_JUST_STARTED = "css-1ssi1df-Text-Text-RaceItem-RaceItem__Status-Race
 RACE_STATUS = "css-8e5cal-Text-Text-RaceItem-RaceItem__Status-RaceItem"
 RACE_STATUS_CONTESTED = "css-1g6shvk-Text-Text-RaceItem-RaceItem__Status-RaceItem"
 
+# Grouping for status classes
 STATUS_CLASSES = [
     RACE_STATUS_FIXED,
     RACE_STATUS_ABOUT_TO_START,
@@ -37,16 +42,12 @@ STATUS_CLASSES = [
     RACE_STATUS,
 ]
 
-# use to extract the time information and pass to make calculating datetime easier:
+# Regex pattern for extracting the time from the status
 DATE_PATTERN = r"(?:(\d+)d\s*)?(?:(\d+)h\s*)?(?:(\d+)m)?"
 
+# Key panels for pricing information
 INDIVIDUAL_PRICE_CONTAINER = "css-4tjjy0-RaceSelectionsListItem-RaceSelectionsListItem__Wrapper-RaceSelectionsListItem"
 HORSE_NAME = "css-1bpf5z2-Text-Text-RaceSelectionDetails-RaceSelectionsDetails__Name-RaceSelectionDetails-RaceSelectionDetails"
 HORSE_PRICE = (
     "css-fvda5w-Text-Text-BettingAdd-styled-BettingAdd__Single-BettingAdd-styled"
 )
-
-# I was using these. I don't think they are needed anymore TODO: remove if no-longer needed
-# MEETING_BANNER_CONTAINER = "css-1h8fvx5-TabsItem-TabsItem-TabsItem-TabsItem-TabsItem-TabsItem-TabsItem-TabsItem"
-# MEETING_BANNER = "css-lz7t06-Text-Text-Link-Link-MeetingItem-MeetingItem__MeetingName-MeetingItem"
-# RUNNER_INFO_CONTAINER = "css-1w3pfuu-List-List-RaceSelectionsList-RaceSelectionsList__RaceSelectionsListItem-RaceSelectionsList"
