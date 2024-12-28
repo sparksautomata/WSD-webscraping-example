@@ -7,11 +7,19 @@ RACE_CONTAINER_TITLE = (
 
 # The class names for finished and upcoming races are slightly different
 RACE_LINK_FINISHED = "css-1qvnyri-RaceItem-RaceItem-RaceItem-RaceItem-RaceItem-RacesRow-RacesRow__RaceItem-RacesRow-RacesRow"
+RACE_LINK_JUST_FINISHED = "css-7cdsxu-Text-Text-RaceItem-RaceItem__Status-RaceItem"
+RACE_LINK_FINISHED_CONTESTED = "css-c9vt4o-RaceItem-RaceItem-RaceItem-RaceItem-RaceItem-RacesRow-RacesRow__RaceItem-RacesRow-RacesRow"
+
 # There are two link objects for race still to run, depending on if the race is fixed or not
 RACE_LINK_FIXED = "css-c9vt4o-RaceItem-RaceItem-RaceItem-RaceItem-RaceItem-RacesRow-RacesRow__RaceItem-RacesRow-RacesRow"
 RACE_LINK = "css-17t6czl-RaceItem-RaceItem-RaceItem-RaceItem-RacesRow-RacesRow__RaceItem-RacesRow-RacesRow"
 
-LINK_CLASSES = [RACE_LINK_FINISHED, RACE_LINK_FIXED, RACE_LINK]
+FINISHED_LINK_CLASSES = [
+    RACE_LINK_FINISHED,
+    RACE_LINK_JUST_FINISHED,
+    RACE_LINK_FINISHED_CONTESTED,
+]
+LINK_CLASSES = [RACE_LINK_FIXED, RACE_LINK] + FINISHED_LINK_CLASSES
 
 
 RACE_STATUS_FIXED = "css-1nxhxh1-Text-Text-RaceItem-RaceItem__Status-RaceItem-RaceItem"
@@ -20,6 +28,7 @@ RACE_STATUS_ABOUT_TO_START = (
 )
 RACE_STATUS_JUST_STARTED = "css-1ssi1df-Text-Text-RaceItem-RaceItem__Status-RaceItem"
 RACE_STATUS = "css-8e5cal-Text-Text-RaceItem-RaceItem__Status-RaceItem"
+RACE_STATUS_CONTESTED = "css-1g6shvk-Text-Text-RaceItem-RaceItem__Status-RaceItem"
 
 STATUS_CLASSES = [
     RACE_STATUS_FIXED,

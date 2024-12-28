@@ -1,6 +1,5 @@
 import os
 import re
-import time
 from bs4 import BeautifulSoup
 import pandas as pd
 from pydantic import BaseModel
@@ -11,6 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from swift_bet_scraper.app.constants import MAIN_URL, RACE_CONTAINER
+from swift_bet_scraper.app.utils import random_sleep
 
 
 # TODO: move any of these that are needed to constants.py
@@ -26,6 +26,7 @@ HORSE_PRICE = (
 )
 
 NAVIGATION_BAR = "css-1djnmje-ButtonGroup-ButtonGroup-ButtonGroup-RacingDateSelection-RacingDateSelection-RacingDateSelection-RacingDateSelection-RacingHomePage"
+RACE_PANEL = "css-1w3pfuu-List-List-RaceSelectionsList-RaceSelectionsList__RaceSelectionsListItem-RaceSelectionsList"
 
 
 class HorsePriceInfo(BaseModel):
@@ -51,6 +52,7 @@ class SwiftBetRaceLinkScraper:
             WebDriverWait(self.driver, 20).until(
                 EC.presence_of_element_located((By.CLASS_NAME, RACE_CONTAINER))
             )
+            random_sleep()  # add a bit of delay to make the interaction seem more human
 
             tomorrow = True
 
@@ -62,11 +64,11 @@ class SwiftBetRaceLinkScraper:
                 )
                 tomorrow_button.click()
 
-            # Wait for the page to load
-            # WebDriverWait(self.driver, 20).until(
-            #     EC.presence_of_element_located((By.CLASS_NAME, RACE_CONTAINER))
-            # )
-            time.sleep(5)  # TODO: fix these rough timings with proper WebDriverWaits
+            # Wait for race panels to me loaded
+            WebDriverWait(self.driver, 20).until(
+                EC.presence_of_element_located((By.CLASS_NAME, RACE_PANEL))
+            )
+            random_sleep()  # add a bit of delay to make the interaction seem more human
 
             # navigate to the race page
             race_panel = self.driver.find_element(
@@ -74,11 +76,9 @@ class SwiftBetRaceLinkScraper:
             )
             race_panel.click()
 
-            # Wait for the race page to load
-            time.sleep(5)  # TODO: fix these rough timings with proper WebDriverWaits
-            # WebDriverWait(self.driver, 20).until(
-            #     EC.presence_of_element_located((By.CLASS_NAME, PRICES_CONTAINER))
-            # )
+            WebDriverWait(self.driver, 20).until(
+                EC.presence_of_element_located((By.CLASS_NAME, PRICES_CONTAINER))
+            )
 
             full_page = self.driver.page_source
             parsed_page = BeautifulSoup(full_page, "html.parser")

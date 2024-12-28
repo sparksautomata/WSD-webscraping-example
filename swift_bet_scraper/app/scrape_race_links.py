@@ -10,17 +10,21 @@ from bs4 import BeautifulSoup
 import pandas as pd
 
 from swift_bet_scraper.app.constants import (
+    FINISHED_LINK_CLASSES,
     LINK_CLASSES,
     MAIN_URL,
     RACE_CONTAINER,
     RACE_PANEL,
-    RACE_LINK_FINISHED,
     RACE_CONTAINER_TITLE,
     DATE_PATTERN,
     STATUS_CLASSES,
 )
 
 from swift_bet_scraper.app.utils import clean_string_for_filepath
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class RaceInfo(BaseModel):
@@ -66,7 +70,7 @@ class SwiftBetRaceLinkScraper:
                     course=split_link[-2],
                     race_number=race_number,
                     link=link,
-                    finished=html_class == RACE_LINK_FINISHED,
+                    finished=html_class in FINISHED_LINK_CLASSES,
                 )
         return None
 
@@ -95,9 +99,15 @@ class SwiftBetRaceLinkScraper:
 
         race_time = self.__get_race_time(race_panel)
         if not race_time:
-            # raise the error here as we can use the link info to provide more context
-            raise ValueError(
-                f"Race {link_info.course}: {link_info.race_number} has no status"
+            # TODO: figure out why this is failing to get some statuses
+            logger.info(
+                f"No time found for {link_info.course}: {link_info}. Marking as finished."
+            )
+            return RaceInfo(
+                course=link_info.course,
+                race_number=link_info.race_number,
+                time="Finished",
+                html_link=link_info.link,
             )
 
         return RaceInfo(
@@ -131,6 +141,7 @@ class SwiftBetRaceLinkScraper:
         race_list_container: BeautifulSoup,
     ) -> None:
         race_type = race_list_container.find("span", class_=RACE_CONTAINER_TITLE)
+        logger.info(f"Parsing data for '{day_of_data}' of type '{race_type}'.")
         if race_type is None:
             raise ValueError("Could not parse race type from container.")
         race_type = clean_string_for_filepath(race_type.get_text(strip=True))
