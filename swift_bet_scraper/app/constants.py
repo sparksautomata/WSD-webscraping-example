@@ -40,6 +40,12 @@ STATUS_CLASSES = [
 # use to extract the time information and pass to make calculating datetime easier:
 DATE_PATTERN = r"(?:(\d+)d\s*)?(?:(\d+)h\s*)?(?:(\d+)m)?"
 
+INDIVIDUAL_PRICE_CONTAINER = "css-4tjjy0-RaceSelectionsListItem-RaceSelectionsListItem__Wrapper-RaceSelectionsListItem"
+HORSE_NAME = "css-1bpf5z2-Text-Text-RaceSelectionDetails-RaceSelectionsDetails__Name-RaceSelectionDetails-RaceSelectionDetails"
+HORSE_PRICE = (
+    "css-fvda5w-Text-Text-BettingAdd-styled-BettingAdd__Single-BettingAdd-styled"
+)
+
 # I was using these. I don't think they are needed anymore TODO: remove if no-longer needed
 # MEETING_BANNER_CONTAINER = "css-1h8fvx5-TabsItem-TabsItem-TabsItem-TabsItem-TabsItem-TabsItem-TabsItem-TabsItem"
 # MEETING_BANNER = "css-lz7t06-Text-Text-Link-Link-MeetingItem-MeetingItem__MeetingName-MeetingItem"

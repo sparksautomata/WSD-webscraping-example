@@ -11,25 +11,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from swift_bet_scraper.app.constants import MAIN_URL, RACE_CONTAINER
+from swift_bet_scraper.app.constants import (
+    HORSE_NAME,
+    HORSE_PRICE,
+    INDIVIDUAL_PRICE_CONTAINER,
+    MAIN_URL,
+    RACE_CONTAINER,
+)
 from swift_bet_scraper.app.utils import clean_string_for_filepath, random_sleep
 from swift_bet_scraper.app.scraper_types import RaceInfo
-
-
-# TODO: move any of these that are needed to constants.py
-TARGET_URL = (
-    "https://swiftbet.com.au//racing/gallops/sapphire-coast/race-2-1963848-1088227"
-)
-PRICES_CONTAINER = "css-1w3pfuu-List-List-RaceSelectionsList-RaceSelectionsList__RaceSelectionsListItem-RaceSelectionsList"
-INDIVIDUAL_PRICE_CONTAINER = "css-4tjjy0-RaceSelectionsListItem-RaceSelectionsListItem__Wrapper-RaceSelectionsListItem"
-
-HORSE_NAME = "css-1bpf5z2-Text-Text-RaceSelectionDetails-RaceSelectionsDetails__Name-RaceSelectionDetails-RaceSelectionDetails"
-HORSE_PRICE = (
-    "css-fvda5w-Text-Text-BettingAdd-styled-BettingAdd__Single-BettingAdd-styled"
-)
-
-NAVIGATION_BAR = "css-1djnmje-ButtonGroup-ButtonGroup-ButtonGroup-RacingDateSelection-RacingDateSelection-RacingDateSelection-RacingDateSelection-RacingHomePage"
-RACE_PANEL = "css-1w3pfuu-List-List-RaceSelectionsList-RaceSelectionsList__RaceSelectionsListItem-RaceSelectionsList"
 
 
 class HorsePriceInfo(BaseModel):
@@ -79,6 +69,7 @@ class SwiftBetRaceLinkScraper:
             )
 
             # navigate to the race page
+            # TODO: I sometimes get a stale element reference error here - need to investigate
             race_panel = self.driver.find_element(
                 By.XPATH, f"//a[@href='{race_info.html_link}']"
             )
@@ -183,8 +174,3 @@ class SwiftBetRaceLinkScraper:
 if __name__ == "__main__":
     scraper = SwiftBetRaceLinkScraper()
     scraper.save_pricing_info()
-    # price_panels = scraper.get_race_price_info()
-    # for panels in price_panels:
-    #     price_info = scraper.format_price_info(panels)
-    #     if price_info:
-    #         print(price_info.model_dump())
