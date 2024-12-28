@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import re
 from bs4 import BeautifulSoup
@@ -15,7 +16,7 @@ from swift_bet_scraper.app.utils import random_sleep
 
 # TODO: move any of these that are needed to constants.py
 TARGET_URL = (
-    "https://swiftbet.com.au//racing/gallops/moonee-valley/race-3-1963220-1088174"
+    "https://swiftbet.com.au//racing/gallops/sapphire-coast/race-2-1963848-1088227"
 )
 PRICES_CONTAINER = "css-1w3pfuu-List-List-RaceSelectionsList-RaceSelectionsList__RaceSelectionsListItem-RaceSelectionsList"
 INDIVIDUAL_PRICE_CONTAINER = "css-4tjjy0-RaceSelectionsListItem-RaceSelectionsListItem__Wrapper-RaceSelectionsListItem"
@@ -34,6 +35,11 @@ class HorsePriceInfo(BaseModel):
     price: float
 
 
+class RandomRace(BaseModel):
+    url: str
+    is_tomorrow: bool
+
+
 class SwiftBetRaceLinkScraper:
     def __init__(self) -> None:
         # setup selenium web driver
@@ -43,7 +49,8 @@ class SwiftBetRaceLinkScraper:
     def get_race_price_info(
         self,
         starting_url: str = MAIN_URL,
-        target_url: str = TARGET_URL,  # TODO: Create something that pics a pics a random linlk
+        target_url: str = TARGET_URL,  # TODO: Create something that pics a pics a random link
+        tomorrow: bool = False,
     ) -> list[BeautifulSoup]:
         try:
             self.driver.get(starting_url)
@@ -52,9 +59,7 @@ class SwiftBetRaceLinkScraper:
             WebDriverWait(self.driver, 20).until(
                 EC.presence_of_element_located((By.CLASS_NAME, RACE_CONTAINER))
             )
-            random_sleep()  # add a bit of delay to make the interaction seem more human
-
-            tomorrow = True
+            random_sleep(1, 2)  # Add a random sleep to avoid detection
 
             if tomorrow:
                 # click the tomorrow button
@@ -63,21 +68,31 @@ class SwiftBetRaceLinkScraper:
                     "//button[@data-fs-title='page:racing-tab:tomorrow-header_bar']",
                 )
                 tomorrow_button.click()
+                random_sleep(
+                    3, 5
+                )  # TODO: for some reason the WebDriverWait will return true, even though the target element has nto been loaded
 
-            # Wait for race panels to me loaded
+            # Wait for race panels to be loaded
             WebDriverWait(self.driver, 20).until(
-                EC.presence_of_element_located((By.CLASS_NAME, RACE_PANEL))
+                EC.presence_of_element_located(
+                    (
+                        By.CLASS_NAME,
+                        RACE_CONTAINER,
+                    )
+                )
             )
-            random_sleep()  # add a bit of delay to make the interaction seem more human
 
             # navigate to the race page
             race_panel = self.driver.find_element(
                 By.XPATH, f"//a[@href='{target_url}']"
             )
             race_panel.click()
+            random_sleep(1, 2)  # Add a random sleep to avoid detection
 
             WebDriverWait(self.driver, 20).until(
-                EC.presence_of_element_located((By.CLASS_NAME, PRICES_CONTAINER))
+                EC.presence_of_element_located(
+                    (By.CLASS_NAME, INDIVIDUAL_PRICE_CONTAINER)
+                )
             )
 
             full_page = self.driver.page_source
@@ -110,8 +125,45 @@ class SwiftBetRaceLinkScraper:
             price=float(horse_price.get_text(strip=True)),
         )
 
+    def get_random_unfinished_race(self) -> RandomRace:
+        # read all csvs from races_data directory that have todays data a the end of the file name
+        all_files = os.listdir(
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "../races_data")
+        )
+        todays_date = datetime.now().date()
+        today_files = [
+            file
+            for file in all_files
+            if f"collected_{todays_date.strftime('%Y-%m-%d')}" in file
+        ]
+        full_dataframe = pd.DataFrame()
+        for file in today_files:
+            file_df = pd.read_csv(
+                os.path.join(
+                    os.path.dirname(os.path.abspath(__file__)),
+                    f"../races_data/{file}",
+                )
+            )
+            full_dataframe = pd.concat([full_dataframe, file_df])
+        # filter only by unfinished races
+        unfinished_races = full_dataframe[full_dataframe["time"] != "Finished"]
+        # pick a single row at random
+        random_race = unfinished_races.sample()
+        # check if the race is happing tomorrow - if so we need to navigate to the tomorrow page
+        random_race_date = datetime.strptime(
+            str(random_race["time"].values[0]), "%Y-%m-%d %H:%M:%S"
+        )
+        tomorrows_date = todays_date + pd.Timedelta(days=1)
+        race_is_tomorrow = random_race_date.date() == tomorrows_date
+        return RandomRace(
+            url=str(random_race["html_link"].values[0]), is_tomorrow=race_is_tomorrow
+        )
+
     def save_pricing_info(self):
-        price_panels = self.get_race_price_info()
+        random_race = self.get_random_unfinished_race()
+        price_panels = self.get_race_price_info(
+            target_url=random_race.url, tomorrow=random_race.is_tomorrow
+        )
         race_info_list = [self.format_price_info(pp) for pp in price_panels]
         df_performed_bets = pd.DataFrame(
             [race.model_dump() for race in race_info_list if race is not None]
