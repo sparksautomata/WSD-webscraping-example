@@ -55,9 +55,7 @@ class SwiftBetRaceLinkScraper:
                     "//button[@data-fs-title='page:racing-tab:tomorrow-header_bar']",
                 )
                 tomorrow_button.click()
-                random_sleep(
-                    3, 5
-                )  # TODO: for some reason the WebDriverWait will return true, when the element hadn't loaded yet
+                random_sleep(3, 5)
 
             # Wait for race panels to be loaded
             WebDriverWait(self.driver, 20).until(
@@ -70,11 +68,17 @@ class SwiftBetRaceLinkScraper:
             )
 
             # navigate to the race page
-            # TODO: I sometimes get a stale element reference error here - need to investigate
             race_panel = self.driver.find_element(
                 By.XPATH, f"//a[@href='{race_info.html_link}']"
             )
-            race_panel.click()
+            try:
+                # TODO: I sometimes get a stale element reference error here - need to investigate
+                race_panel.click()
+            except Exception as e:
+                raise RuntimeError(
+                    f"Exception encountered trying to click panel associated with {race_info.course}, "
+                    f"race {race_info.race_number} at {race_info.time}. Please Retry."
+                ) from e
             random_sleep(1, 2)  # Add a random sleep to avoid detection
 
             WebDriverWait(self.driver, 20).until(
