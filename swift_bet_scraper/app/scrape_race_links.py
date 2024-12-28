@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 import os
 import re
-from pydantic import BaseModel
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -20,19 +19,12 @@ from swift_bet_scraper.app.constants import (
     STATUS_CLASSES,
 )
 
-from swift_bet_scraper.app.scraper_types import RaceInfo
+from swift_bet_scraper.app.scraper_types import LinkInfo, RaceInfo
 from swift_bet_scraper.app.utils import clean_string_for_filepath
 
 import logging
 
 logger = logging.getLogger(__name__)
-
-
-class LinkInfo(BaseModel):
-    course: str
-    race_number: int
-    link: str
-    finished: bool = False
 
 
 class SwiftBetRaceLinkScraper:

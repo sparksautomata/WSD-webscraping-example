@@ -3,7 +3,6 @@ import os
 import re
 from bs4 import BeautifulSoup
 import pandas as pd
-from pydantic import BaseModel
 from selenium import webdriver
 from pandas_to_pydantic import dataframe_to_pydantic
 
@@ -19,12 +18,7 @@ from swift_bet_scraper.app.constants import (
     RACE_CONTAINER,
 )
 from swift_bet_scraper.app.utils import clean_string_for_filepath, random_sleep
-from swift_bet_scraper.app.scraper_types import RaceInfo
-
-
-class HorsePriceInfo(BaseModel):
-    name: str
-    price: float | str
+from swift_bet_scraper.app.scraper_types import HorsePriceInfo, RaceInfo
 
 
 class SwiftBetRaceLinkScraper:

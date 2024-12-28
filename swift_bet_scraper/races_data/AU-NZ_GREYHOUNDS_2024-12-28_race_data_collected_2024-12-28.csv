@@ -1,16 +1,4 @@
 course,race_number,time,html_link
-dubbo,1,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-1-1962785-1088126
-dubbo,2,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-2-1962787-1088126
-dubbo,3,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-3-1962789-1088126
-dubbo,4,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-4-1962791-1088126
-dubbo,5,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-5-1962795-1088126
-dubbo,6,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-6-1962801-1088126
-dubbo,7,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-7-1962805-1088126
-dubbo,8,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-8-1962810-1088126
-dubbo,9,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-9-1962815-1088126
-dubbo,10,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-10-1962821-1088126
-dubbo,11,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-11-1962826-1088126
-dubbo,12,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-12-1962832-1088126
 the-meadows,1,Finished,https://swiftbet.com.au//racing/greyhounds/the-meadows/race-1-1963600-1088204
 the-meadows,2,Finished,https://swiftbet.com.au//racing/greyhounds/the-meadows/race-2-1963605-1088204
 the-meadows,3,Finished,https://swiftbet.com.au//racing/greyhounds/the-meadows/race-3-1963609-1088204
@@ -34,30 +22,20 @@ the-gardens,8,Finished,https://swiftbet.com.au//racing/greyhounds/the-gardens/ra
 the-gardens,9,Finished,https://swiftbet.com.au//racing/greyhounds/the-gardens/race-9-1963202-1088169
 the-gardens,10,Finished,https://swiftbet.com.au//racing/greyhounds/the-gardens/race-10-1963206-1088169
 the-gardens,11,Finished,https://swiftbet.com.au//racing/greyhounds/the-gardens/race-11-1963213-1088169
-the-gardens,12,2024-12-28 11:57:08,https://swiftbet.com.au//racing/greyhounds/the-gardens/race-12-1963218-1088169
-wentworth-park,1,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-1-1963225-1088176
-wentworth-park,2,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-2-1963230-1088176
-wentworth-park,3,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-3-1963234-1088176
-wentworth-park,4,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-4-1963237-1088176
-wentworth-park,5,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-5-1963241-1088176
-wentworth-park,6,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-6-1963245-1088176
-wentworth-park,7,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-7-1963249-1088176
-wentworth-park,8,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-8-1963253-1088176
-wentworth-park,9,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-9-1963257-1088176
-wentworth-park,10,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-10-1963260-1088176
+the-gardens,12,Finished,https://swiftbet.com.au//racing/greyhounds/the-gardens/race-12-1963218-1088169
 mandurah,1,Finished,https://swiftbet.com.au//racing/greyhounds/mandurah/race-1-1963176-1088170
 mandurah,2,Finished,https://swiftbet.com.au//racing/greyhounds/mandurah/race-2-1963180-1088170
 mandurah,3,Finished,https://swiftbet.com.au//racing/greyhounds/mandurah/race-3-1963183-1088170
 mandurah,4,Finished,https://swiftbet.com.au//racing/greyhounds/mandurah/race-4-1963187-1088170
 mandurah,5,Finished,https://swiftbet.com.au//racing/greyhounds/mandurah/race-5-1963191-1088170
-mandurah,6,2024-12-28 12:34:08,https://swiftbet.com.au//racing/greyhounds/mandurah/race-6-1963196-1088170
-mandurah,7,2024-12-28 12:52:08,https://swiftbet.com.au//racing/greyhounds/mandurah/race-7-1963200-1088170
-mandurah,8,2024-12-28 13:12:08,https://swiftbet.com.au//racing/greyhounds/mandurah/race-8-1963204-1088170
+mandurah,6,Finished,https://swiftbet.com.au//racing/greyhounds/mandurah/race-6-1963196-1088170
+mandurah,7,Finished,https://swiftbet.com.au//racing/greyhounds/mandurah/race-7-1963200-1088170
+mandurah,8,Finished,https://swiftbet.com.au//racing/greyhounds/mandurah/race-8-1963204-1088170
 mandurah,9,Finished,https://swiftbet.com.au//racing/greyhounds/mandurah/race-9-1963208-1088170
-mandurah,10,2024-12-28 13:47:08,https://swiftbet.com.au//racing/greyhounds/mandurah/race-10-1963212-1088170
-mandurah,11,2024-12-28 14:07:08,https://swiftbet.com.au//racing/greyhounds/mandurah/race-11-1963217-1088170
+mandurah,10,Finished,https://swiftbet.com.au//racing/greyhounds/mandurah/race-10-1963212-1088170
+mandurah,11,Finished,https://swiftbet.com.au//racing/greyhounds/mandurah/race-11-1963217-1088170
 mandurah,12,Finished,https://swiftbet.com.au//racing/greyhounds/mandurah/race-12-1963221-1088170
-mandurah,13,2024-12-28 14:43:08,https://swiftbet.com.au//racing/greyhounds/mandurah/race-13-1963224-1088170
+mandurah,13,Finished,https://swiftbet.com.au//racing/greyhounds/mandurah/race-13-1963224-1088170
 warrnambool,1,Finished,https://swiftbet.com.au//racing/greyhounds/warrnambool/race-1-1963581-1088202
 warrnambool,2,Finished,https://swiftbet.com.au//racing/greyhounds/warrnambool/race-2-1963584-1088202
 warrnambool,3,Finished,https://swiftbet.com.au//racing/greyhounds/warrnambool/race-3-1963585-1088202
@@ -70,6 +48,18 @@ warrnambool,9,Finished,https://swiftbet.com.au//racing/greyhounds/warrnambool/ra
 warrnambool,10,Finished,https://swiftbet.com.au//racing/greyhounds/warrnambool/race-10-1963602-1088202
 warrnambool,11,Finished,https://swiftbet.com.au//racing/greyhounds/warrnambool/race-11-1963604-1088202
 warrnambool,12,Finished,https://swiftbet.com.au//racing/greyhounds/warrnambool/race-12-1963608-1088202
+dubbo,1,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-1-1962785-1088126
+dubbo,2,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-2-1962787-1088126
+dubbo,3,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-3-1962789-1088126
+dubbo,4,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-4-1962791-1088126
+dubbo,5,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-5-1962795-1088126
+dubbo,6,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-6-1962801-1088126
+dubbo,7,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-7-1962805-1088126
+dubbo,8,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-8-1962810-1088126
+dubbo,9,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-9-1962815-1088126
+dubbo,10,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-10-1962821-1088126
+dubbo,11,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-11-1962826-1088126
+dubbo,12,Finished,https://swiftbet.com.au//racing/greyhounds/dubbo/race-12-1962832-1088126
 muswellbrook,1,Finished,https://swiftbet.com.au//racing/greyhounds/muswellbrook/race-1-1963262-1088180
 muswellbrook,2,Finished,https://swiftbet.com.au//racing/greyhounds/muswellbrook/race-2-1963264-1088180
 muswellbrook,3,Finished,https://swiftbet.com.au//racing/greyhounds/muswellbrook/race-3-1963267-1088180
@@ -91,3 +81,14 @@ ipswich,8,Finished,https://swiftbet.com.au//racing/greyhounds/ipswich/race-8-196
 ipswich,9,Finished,https://swiftbet.com.au//racing/greyhounds/ipswich/race-9-1963247-1088175
 ipswich,10,Finished,https://swiftbet.com.au//racing/greyhounds/ipswich/race-10-1963251-1088175
 ipswich,11,Finished,https://swiftbet.com.au//racing/greyhounds/ipswich/race-11-1963254-1088175
+ipswich,12,Finished,https://swiftbet.com.au//racing/greyhounds/ipswich/race-12-1963259-1088175
+wentworth-park,1,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-1-1963225-1088176
+wentworth-park,2,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-2-1963230-1088176
+wentworth-park,3,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-3-1963234-1088176
+wentworth-park,4,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-4-1963237-1088176
+wentworth-park,5,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-5-1963241-1088176
+wentworth-park,6,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-6-1963245-1088176
+wentworth-park,7,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-7-1963249-1088176
+wentworth-park,8,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-8-1963253-1088176
+wentworth-park,9,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-9-1963257-1088176
+wentworth-park,10,Finished,https://swiftbet.com.au//racing/greyhounds/wentworth-park/race-10-1963260-1088176
