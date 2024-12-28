@@ -492,6 +492,21 @@ test = ["hypothesis (>=6.46.1)", "pytest (>=7.3.2)", "pytest-xdist (>=2.2.0)"]
 xml = ["lxml (>=4.9.2)"]
 
 [[package]]
+name = "pandas-to-pydantic"
+version = "0.1.4"
+description = "Library for converting pandas dataframes to pydantic models"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "pandas_to_pydantic-0.1.4-py3-none-any.whl", hash = "sha256:92bc3f5ea47d67214957f18444a56105703bf559c365e5da3bbbb717ef7c0c6a"},
+    {file = "pandas_to_pydantic-0.1.4.tar.gz", hash = "sha256:737da9414a564249fd9a36979ab4d09d148b0856158c7867328eb49661e6ae87"},
+]
+
+[package.dependencies]
+pandas = ">=2.0.0"
+pydantic = ">=2.0.1"
+
+[[package]]
 name = "pluggy"
 version = "1.5.0"
 description = "plugin and hook calling mechanisms for python"
@@ -944,4 +959,4 @@ h11 = ">=0.9.0,<1"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "3b678802b3b76c7ee1a6a08630fe455b484229f57c0fe944f2c5a2e1c1011053"
+content-hash = "9c5fa7ce614ef246aba09437b6f1a9b54a84794dcfb17033f339780b78ba4556"

@@ -20,18 +20,12 @@ from swift_bet_scraper.app.constants import (
     STATUS_CLASSES,
 )
 
+from swift_bet_scraper.app.scraper_types import RaceInfo
 from swift_bet_scraper.app.utils import clean_string_for_filepath
 
 import logging
 
 logger = logging.getLogger(__name__)
-
-
-class RaceInfo(BaseModel):
-    course: str
-    race_number: int
-    time: str | datetime
-    html_link: str
 
 
 class LinkInfo(BaseModel):

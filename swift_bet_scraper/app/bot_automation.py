@@ -5,13 +5,15 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from pydantic import BaseModel
 from selenium import webdriver
+from pandas_to_pydantic import dataframe_to_pydantic
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from swift_bet_scraper.app.constants import MAIN_URL, RACE_CONTAINER
-from swift_bet_scraper.app.utils import random_sleep
+from swift_bet_scraper.app.utils import clean_string_for_filepath, random_sleep
+from swift_bet_scraper.app.scraper_types import RaceInfo
 
 
 # TODO: move any of these that are needed to constants.py
@@ -32,12 +34,7 @@ RACE_PANEL = "css-1w3pfuu-List-List-RaceSelectionsList-RaceSelectionsList__RaceS
 
 class HorsePriceInfo(BaseModel):
     name: str
-    price: float
-
-
-class RandomRace(BaseModel):
-    url: str
-    is_tomorrow: bool
+    price: float | str
 
 
 class SwiftBetRaceLinkScraper:
@@ -48,9 +45,8 @@ class SwiftBetRaceLinkScraper:
 
     def get_race_price_info(
         self,
+        race_info: RaceInfo,
         starting_url: str = MAIN_URL,
-        target_url: str = TARGET_URL,  # TODO: Create something that pics a pics a random link
-        tomorrow: bool = False,
     ) -> list[BeautifulSoup]:
         try:
             self.driver.get(starting_url)
@@ -61,7 +57,7 @@ class SwiftBetRaceLinkScraper:
             )
             random_sleep(1, 2)  # Add a random sleep to avoid detection
 
-            if tomorrow:
+            if self.__is_race_tomorrow(race_info.time):
                 # click the tomorrow button
                 tomorrow_button = self.driver.find_element(
                     By.XPATH,
@@ -84,7 +80,7 @@ class SwiftBetRaceLinkScraper:
 
             # navigate to the race page
             race_panel = self.driver.find_element(
-                By.XPATH, f"//a[@href='{target_url}']"
+                By.XPATH, f"//a[@href='{race_info.html_link}']"
             )
             race_panel.click()
             random_sleep(1, 2)  # Add a random sleep to avoid detection
@@ -120,21 +116,26 @@ class SwiftBetRaceLinkScraper:
         horse_price = price_info_panel.find("span", class_=HORSE_PRICE)
         if not horse_price:
             raise ValueError("Could not find horse price")
+        try:
+            price = float(horse_price.get_text(strip=True))
+        except ValueError:
+            price = horse_price.get_text(
+                strip=True
+            )  # for when the price is "SP" or similar
         return HorsePriceInfo(
             name=self.__extract_horse_name(horse_name.get_text(strip=True)),
-            price=float(horse_price.get_text(strip=True)),
+            price=price,
         )
 
-    def get_random_unfinished_race(self) -> RandomRace:
+    def get_random_unfinished_race(self) -> RaceInfo:
         # read all csvs from races_data directory that have todays data a the end of the file name
         all_files = os.listdir(
             os.path.join(os.path.dirname(os.path.abspath(__file__)), "../races_data")
         )
-        todays_date = datetime.now().date()
         today_files = [
             file
             for file in all_files
-            if f"collected_{todays_date.strftime('%Y-%m-%d')}" in file
+            if f"collected_{datetime.now().strftime('%Y-%m-%d')}" in file
         ]
         full_dataframe = pd.DataFrame()
         for file in today_files:
@@ -149,21 +150,17 @@ class SwiftBetRaceLinkScraper:
         unfinished_races = full_dataframe[full_dataframe["time"] != "Finished"]
         # pick a single row at random
         random_race = unfinished_races.sample()
-        # check if the race is happing tomorrow - if so we need to navigate to the tomorrow page
-        random_race_date = datetime.strptime(
-            str(random_race["time"].values[0]), "%Y-%m-%d %H:%M:%S"
-        )
-        tomorrows_date = todays_date + pd.Timedelta(days=1)
-        race_is_tomorrow = random_race_date.date() == tomorrows_date
-        return RandomRace(
-            url=str(random_race["html_link"].values[0]), is_tomorrow=race_is_tomorrow
-        )
+        return dataframe_to_pydantic(random_race, RaceInfo).root[0]
+
+    def __is_race_tomorrow(self, date: datetime | str) -> bool:
+        if isinstance(date, str):  # pragma: no cover
+            date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
+        tomorrow = datetime.now() + pd.Timedelta(days=1)
+        return date.date() == tomorrow.date()
 
     def save_pricing_info(self):
-        random_race = self.get_random_unfinished_race()
-        price_panels = self.get_race_price_info(
-            target_url=random_race.url, tomorrow=random_race.is_tomorrow
-        )
+        random_race_info = self.get_random_unfinished_race()
+        price_panels = self.get_race_price_info(race_info=random_race_info)
         race_info_list = [self.format_price_info(pp) for pp in price_panels]
         df_performed_bets = pd.DataFrame(
             [race.model_dump() for race in race_info_list if race is not None]
@@ -171,10 +168,14 @@ class SwiftBetRaceLinkScraper:
 
         # save out the data to csv
         base_dir = os.path.dirname(os.path.abspath(__file__))
+        if isinstance(random_race_info.time, datetime):
+            file_path_time_string = random_race_info.time.strftime("%Y-%m-%d_%H-%M-%S")  # type: ignore
+        else:
+            file_path_time_string = clean_string_for_filepath(random_race_info.time)
         file_path = os.path.join(
             base_dir,
-            "../performed_bets/example_csv.csv",
-        )  # TODO, use the target url to name the file_path
+            f"../performed_bets/prices_{random_race_info.course}_race_{random_race_info.race_number}_{file_path_time_string}.csv",
+        )
 
         df_performed_bets.to_csv(file_path, index=False)
 
