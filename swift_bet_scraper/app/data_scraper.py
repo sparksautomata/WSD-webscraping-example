@@ -195,5 +195,6 @@ class SwiftBetRaceLinkScraper:
 
 
 if __name__ == "__main__":
+    logging.basicConfig(filename="myapp.log", level=logging.INFO)
     scraper = SwiftBetRaceLinkScraper()
     scraper.generate_all_csvs()

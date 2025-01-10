@@ -33,7 +33,7 @@ it as a CSV file.
 # My Approach
  - I opted to save out the data into separate files based on day and race-type, as I found this easier to handle and more human-readable.
  - I quickly discovered most of the elements are dynamically loaded (e.g by Javascript) so needed to employ Selenium over Requests to get the information out.
- - I presumed that finished races are pretty irrelevant (can't bet on a run-race after all) so I overwrote their date as 'Finished' when saving them out the the separate csvs.
+ - I presumed that finished races are pretty irrelevant (can't bet on a run-race after all) so I overwrote their date as 'Finished' when saving them out to the separate csvs.
  - There are a number of subtle variation in html object that I have mostly caught, but there seem to be a few that crop up when a race goes through state-changes (e.g when a race starts, finishes and is paid-out). I added logging to capture any future ones.
  - I assumed when getting prices we only care about the price of a horse to win.
  - I did not use the race url directly, but the easiest way to tell Selenium what to click on was to search for the url element. Selenium is still acting like a human navigating the site, just using the url to determine what to look at. Very rarely, this will lead to an error. If you rerun the code it should be fine. I have not been able to identify what makes some clicks not work...

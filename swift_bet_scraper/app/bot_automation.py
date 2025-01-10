@@ -193,5 +193,6 @@ class SwiftBetRaceLinkScraper:
 
 
 if __name__ == "__main__":
+    logging.basicConfig(filename="myapp.log", level=logging.INFO)
     scraper = SwiftBetRaceLinkScraper()
     scraper.save_pricing_info()
